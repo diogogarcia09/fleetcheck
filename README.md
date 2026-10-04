@@ -49,3 +49,19 @@ O JAR normal contém apenas as classes do projeto, não declara a `Main-Class` n
 e não inclui o Jackson, por isso não é executável sozinho. O Shade gera um JAR "gordo"
 (`fleetcheck-1.0.0-all.jar`) que copia para dentro as classes das dependências (Jackson)
 e escreve a `Main-Class` (`pt.upt.fleetcheck.App`) no manifesto, tornando-o autónomo.
+
+## Step 5 – Maven Wrapper
+
+Gerei o wrapper com `mvn wrapper:wrapper`, que criou `mvnw`, `mvnw.cmd` e `.mvn/wrapper/`,
+e fiz commit destes ficheiros. Marquei também o `mvnw` como executável no Git
+(`git update-index --chmod=+x mvnw`) para funcionar em Linux. Adicionei ao `pom.xml` a
+propriedade `project.build.outputTimestamp`, que dá aos plugins compatíveis um timestamp
+fixo nos artefactos. Executei `.\mvnw.cmd clean verify` com `BUILD SUCCESS`.
+
+## Step 6 – GitHub Actions (Maven)
+
+Criei o workflow `.github/workflows/build.yml`, que faz checkout, instala o JDK 21,
+corre `./mvnw -B clean verify` e carrega o artefacto `fleetcheck-build`.
+
+URL da execução com sucesso: https://github.com/diogogarcia09/fleetcheck/actions/runs/37235936882
+
